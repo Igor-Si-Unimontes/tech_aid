@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chamados', function (Blueprint $table) {
+        Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description');
-            $table->enum('status', ['aberto', 'andamento', 'fechado'])->default('aberto');
-            $table->enum('priority', ['baixa', 'media', 'alta'])->default('media');
+            $table->text('comments');
+            $table->integer('rating')->unsigned();
+            $table->foreignId('chamado_id')->constrained('chamados')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->timestamp('opening')->nullable();
-            $table->timestamp('closing')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chamados');
+        Schema::dropIfExists('feedbacks');
     }
 };

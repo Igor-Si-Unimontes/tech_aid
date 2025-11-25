@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chamados', function (Blueprint $table) {
+        Schema::create('artigos', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
-            $table->enum('status', ['aberto', 'andamento', 'fechado'])->default('aberto');
-            $table->enum('priority', ['baixa', 'media', 'alta'])->default('media');
+            $table->text('content');
+            $table->string('category');
+            $table->string('tags')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->timestamp('opening')->nullable();
-            $table->timestamp('closing')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chamados');
+        Schema::dropIfExists('artigos');
     }
 };
