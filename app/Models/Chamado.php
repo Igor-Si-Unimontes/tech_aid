@@ -24,4 +24,9 @@ class Chamado extends Model
         'status' => Status::class,
         'priority' => Priority::class,
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

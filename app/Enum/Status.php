@@ -2,11 +2,11 @@
 
 namespace App\Enum;
 
-enum Status
+enum Status : string
 {
-    case open;
-    case in_progress;
-    case closed;
+    case aberto = 'aberto';
+    case andamento = 'andamento';
+    case fechado = 'fechado';
 
     public static function toArray(): array
     {
@@ -16,10 +16,19 @@ enum Status
     public static function fromString(string $value): ?self
     {
         return match ($value) {
-            'open' => self::open,
-            'in_progress' => self::in_progress,
-            'closed' => self::closed,
+            'aberto' => self::aberto,
+            'andamento' => self::andamento,
+            'fechado' => self::fechado,
             default => null,
+        };
+    }
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::aberto => 'Aberto',
+            self::andamento => 'Em Andamento',
+            self::fechado => 'Fechado',
         };
     }
 }

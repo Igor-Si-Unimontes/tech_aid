@@ -50,4 +50,9 @@ class User extends Authenticatable
             'type' => Type::class,
         ];
     }
+
+    public function chamados()
+    {
+        return $this->hasMany(Chamado::class);
+    }
 }

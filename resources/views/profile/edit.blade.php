@@ -1,11 +1,12 @@
-<x-app-layout>
+@extends('layouts.app')
 
-    <x-slot name="header">
-        <h2 class="h4 mb-4">
-            {{ __('Perfil') }}
-        </h2>
-    </x-slot>
+@section('header')
+    <h2 class="h4 mb-4">
+        {{ __('Perfil') }}
+    </h2>
+@endsection
 
+@section('content')
     <div class="row g-4">
 
         <div class="col-12 col-lg-6">
@@ -24,4 +25,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

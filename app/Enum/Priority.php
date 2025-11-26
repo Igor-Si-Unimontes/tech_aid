@@ -2,11 +2,11 @@
 
 namespace App\Enum;
 
-enum Priority
+enum Priority : string
 {
-    case low;
-    case medium;
-    case high;
+    case baixa = 'baixa';
+    case media = 'media';
+    case alta = 'alta';
 
     public static function toArray(): array
     {
@@ -16,10 +16,19 @@ enum Priority
     public static function fromString(string $value): ?self
     {
         return match ($value) {
-            'low' => self::low,
-            'medium' => self::medium,
-            'high' => self::high,
+            'baixa' => self::baixa,
+            'media' => self::media,
+            'alta' => self::alta,
             default => null,
+        };
+    }
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::baixa => 'Baixa',
+            self::media => 'Média',
+            self::alta => 'Alta',
         };
     }
 }

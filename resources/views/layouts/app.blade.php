@@ -16,9 +16,8 @@
     <!-- Fonts opcionais -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+    
     <!-- Scripts próprios -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -38,7 +37,7 @@
     <!-- MAIN CONTENT -->
     <main class="py-4">
         <div class="container">
-            {{ $slot }}
+            @yield('content')
         </div>
     </main>
 
@@ -47,3 +46,8 @@
 
 </body>
 </html>
+<style>
+    h1 {
+        font-size: 33px;
+    }
+</style>
