@@ -21,9 +21,11 @@
             <p class="text-muted">Gerencie seus chamados de forma eficiente</p>
         </div>
         <div class="col-6 text-end d-flex justify-content-end align-items-start">
+            @can('create chamado')
             <a href="{{ route('chamados.create') }}" class="btn btn-primary me-2">
                 Novo Chamado <i class="fa fa-plus"></i>
             </a>
+            @endcan
 
             @if(Route::currentRouteName() === 'chamados.index')
                 <a href="{{ route('chamados.closed') }}" class="btn btn-secondary">
@@ -54,6 +56,9 @@
                             <th>Status</th>
                             <th>Prioridade</th>
                             <th>Abertura</th>
+                            @if($chamado->in_progress)
+                            <th>Iniciado o atendimento</th>
+                            @endif
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -64,8 +69,11 @@
                             <td>{{ $chamado->status->label() }}</td>
                             <td>{{ $chamado->priority->label() }}</td>
                             <td> {{ \Carbon\Carbon::parse($chamado->opening)->format('d/m/Y H:i') }}</td>
+                            @if($chamado->in_progress)
+                            <td> Iniciado em : {{ \Carbon\Carbon::parse($chamado->in_progress)->format('d/m/Y H:i') }} por {{ $chamado->responsavel->name }}</td>
+                            @endif
                             <td>
-                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewModal{{ $chamado->id }}" title="Visualizar chamado">
+                                <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#viewModal{{ $chamado->id }}" title="Visualizar chamado">
                                     <i class="fa fa-eye"></i>
                                 </button>
                                 <a href="{{ route('chamados.edit', $chamado->id) }}" class="btn btn-sm btn-warning" title="Editar chamado"><i class="fa fa-edit"></i></a>
@@ -75,8 +83,13 @@
                                 </button>
                                 @if(Route::currentRouteName() === 'chamados.index')
                                 @can('close chamado')
+                                @if($chamado->status === \App\Enum\Status::andamento)
                                 <a href="{{ route('chamados.close', $chamado->id) }}" class="btn btn-sm btn-success" title="Fechar chamado"><i class="fa fa-close"></i></a>
+                                @elseif($chamado->status === \App\Enum\Status::aberto)
+                                <a href="{{ route('chamados.open', $chamado->id) }}" class="btn btn-sm btn-success" title="Iniciar chamado"><i class="fa fa-play"></i></a>
+                                @endif
                                 @endcan
+                                <a href="#" class="btn btn-sm btn-info" title="Mensagem"><i class="fa fa-message"></i></a>
                                 @elseif(Route::currentRouteName() === 'chamados.closed')
                                 @endif
                                 <!-- Modal de exclusao -->

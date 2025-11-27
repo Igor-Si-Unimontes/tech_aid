@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('chamados', ChamadoController::class);
     Route::get('chamados/close/{id}', [ChamadoController::class, 'close'])->name('chamados.close');
     Route::get('chamados-closed', [ChamadoController::class, 'showAllClosed'])->name('chamados.closed');
+    Route::get('chamados/open/{id}', [ChamadoController::class, 'open'])->name('chamados.open');
 });
 
 require __DIR__.'/auth.php';

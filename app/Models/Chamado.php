@@ -14,7 +14,9 @@ class Chamado extends Model
         'status',
         'priority',
         'user_id',
+        'responsavel_id',
         'opening',
+        'in_progress',
         'closing',
     ];
 
@@ -28,5 +30,9 @@ class Chamado extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function responsavel()
+    {
+        return $this->belongsTo(User::class, 'responsavel_id');
     }
 }

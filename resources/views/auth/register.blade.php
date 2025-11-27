@@ -57,7 +57,7 @@
                         <label class="form-label">Número de celular</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                            <input class="form-control" type="text" name="phone" id="phone">
+                            <input class="form-control" type="text" name="phone" id="phone" required value="{{ old('phone') }}">
                             @error('phone')
                                 <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
@@ -67,7 +67,7 @@
                         <label class="form-label">Endereço</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                            <input class="form-control" type="text" name="address" id="address">
+                            <input class="form-control" type="text" name="address" id="address" required value="{{ old('address') }}">
                             @error('address')
                                 <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror
@@ -77,7 +77,7 @@
                         <label class="form-label">Email</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input class="form-control" type="email" name="email" required>
+                            <input class="form-control" type="email" name="email" required value="{{ old('email') }}">
                             @error('email')
                                 <div class="text-danger mt-1">{{ $message }}</div>
                             @enderror

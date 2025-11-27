@@ -47,7 +47,7 @@
 
                 <div class="row g-3 mb-3">
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-12">
                         <label for="priority" class="form-label">Prioridade</label>
                         <select name="priority" id="priority" class="form-select" required>
                             @foreach(\App\Enum\Priority::cases() as $priority)                                

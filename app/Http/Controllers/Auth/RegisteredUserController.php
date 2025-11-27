@@ -35,6 +35,19 @@ class RegisteredUserController extends Controller
             'address' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'type' => ['required'],
+        ],
+        [
+            'name.required' => 'O campo de nome é obrigatório.',
+            'email.unique' => 'O email já está em uso.',
+            'email.required' => 'O campo de email é obrigatório.',
+            'address.required' => 'O campo de endereço é obrigatório.',
+            'phone.required' => 'O campo de telefone é obrigatório.',
+            'password.required' => 'O campo de senha é obrigatório.',
+            'password.min' => 'A senha deve ter no mínimo :min caracteres.',
+            'type.required' => 'O campo de tipo de usuário é obrigatório.',
+            'password.confirmed' => 'A confirmação da senha não corresponde.',
+
         ]);
 
         $user = User::create([
@@ -45,6 +58,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'type' => $request->type,
         ]);
+        
+        $user->assignRole($request->type);
 
         event(new Registered($user));
 

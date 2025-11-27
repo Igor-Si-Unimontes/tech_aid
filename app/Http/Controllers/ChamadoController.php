@@ -12,7 +12,7 @@ class ChamadoController extends Controller
 {
     public function index()
     {
-        $chamados = Chamado::with('user')->where('status', '!=', Status::fechado)->get();
+        $chamados = Chamado::with('user', 'responsavel')->where('status', '!=', Status::fechado)->get();
         return view('chamados.index', compact('chamados'));
     }
 
@@ -120,5 +120,22 @@ class ChamadoController extends Controller
 
         return redirect()->route('chamados.index')
             ->with('success', 'Chamado fechado com sucesso!');
+    }
+    public function open($id)
+    {
+        try {
+            $chamado = Chamado::findOrFail($id);
+
+            $chamado->status = Status::andamento;
+            $chamado->in_progress = Carbon::now();
+            $chamado->responsavel_id = auth()->id();
+            $chamado->save();
+        } catch (\Exception $e) {
+            return redirect()->route('chamados.index')
+                ->with('error', 'Ocorreu um erro ao tentar reabrir o chamado.');
+        }
+
+        return redirect()->route('chamados.index')
+            ->with('success', 'Chamado aberto com sucesso!');
     }
 }
