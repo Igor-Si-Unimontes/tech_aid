@@ -12,6 +12,15 @@
             {{ session('error') }}
         </div>
     @endif
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
     <div class="row mb-4 align-items-center">
         <div class="col-12 col-md-6">
@@ -28,12 +37,12 @@
                 @csrf
                 <div class="mb-3">
                     <label for="title" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="title" name="title" required>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Descrição</label>
-                    <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="4" required>{{ old('description') }}</textarea>
                 </div>
 
                 <div class="row g-3 mb-3">

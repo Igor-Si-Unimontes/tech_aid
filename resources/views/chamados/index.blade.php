@@ -31,7 +31,7 @@
                 </a>
             @elseif(Route::currentRouteName() === 'chamados.closed')
                 <a href="{{ route('chamados.index') }}" class="btn btn-success">
-                    Ver Chamados Abertos <i class="fa fa-eye"></i>
+                    Ver Chamados Ativos <i class="fa fa-eye"></i>
                 </a>
             @endif
         </div>
@@ -40,6 +40,11 @@
 
     <div class="row">
         <div class="col-12">
+            @if($chamados->isEmpty())
+                <div class="alert alert-info">
+                    Nenhum chamado encontrado.
+                </div>
+            @endif
             @foreach ($chamados as $chamado)
                 <table class="table table-striped">
                     <thead>
@@ -69,9 +74,10 @@
                                     <i class="fa fa-trash"></i>
                                 </button>
                                 @if(Route::currentRouteName() === 'chamados.index')
+                                @can('close chamado')
                                 <a href="{{ route('chamados.close', $chamado->id) }}" class="btn btn-sm btn-success" title="Fechar chamado"><i class="fa fa-close"></i></a>
+                                @endcan
                                 @elseif(Route::currentRouteName() === 'chamados.closed')
-
                                 @endif
                                 <!-- Modal de exclusao -->
                                 <div class="modal fade" id="deleteModal{{ $chamado->id }}" tabindex="-1"

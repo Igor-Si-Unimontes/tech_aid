@@ -27,7 +27,21 @@
 
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
-
+                    <div class="mb-3">
+                        <label class="form-label">Permissão</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user-shield"></i></span>
+                            <select class="form-control" name="type" required>
+                                <option value="" disabled selected>Selecione o tipo de usuário</option>
+                                <option value="user" {{ old('type') == 'user' ? 'selected' : '' }}>Usuário</option>
+                                <option value="admin" {{ old('type') == 'admin' ? 'selected' : '' }}>Administrador</option>
+                                <option value="tech" {{ old('type') == 'tech' ? 'selected' : '' }}>Técnico</option>
+                            </select>
+                            @error('type')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Nome</label>
                         <div class="input-group">

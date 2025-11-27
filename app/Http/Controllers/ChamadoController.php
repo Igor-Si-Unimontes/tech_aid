@@ -21,7 +21,7 @@ class ChamadoController extends Controller
         $chamados = Chamado::with('user')->where('status', '=', Status::fechado)->get();
         return view('chamados.index', compact('chamados'));
     }
-    
+
     public function create()
     {
         return view('chamados.create');
@@ -29,16 +29,33 @@ class ChamadoController extends Controller
 
     public function store(Request $request)
     {
-        
-        $chamado = new Chamado();
-        $chamado->title = $request->input('title');
-        $chamado->description = $request->input('description');
-        $chamado->status = Status::aberto;
-        $chamado->priority = Priority::fromString($request->input('priority'));
-        $chamado->user_id = auth()->id();
-        $chamado->opening = Carbon::now();
-        $chamado->save();
-        return redirect()->route('chamados.index')->with('success', 'Chamado criado com sucesso!');
+        try {
+
+            $request->validate(
+                [
+                    'title' => 'required|string|max:5',
+                    'description' => 'required|string',
+                    'priority' => 'required',
+                ],
+                [
+                    'title.required' => 'O campo Título é obrigatório.',
+                    'title.max' => 'O campo Título deve ter no máximo 5 caracteres.',
+                    'description.required' => 'O campo Descrição é obrigatório.',
+                    'priority.required' => 'O campo Prioridade é obrigatório.',
+                ]
+            );
+            $chamado = new Chamado();
+            $chamado->title = $request->input('title');
+            $chamado->description = $request->input('description');
+            $chamado->status = Status::aberto;
+            $chamado->priority = Priority::fromString($request->input('priority'));
+            $chamado->user_id = auth()->id();
+            $chamado->opening = Carbon::now();
+            $chamado->save();
+            return redirect()->route('chamados.index')->with('success', 'Chamado criado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Ocorreu um erro ao criar o chamado: ' . $e->getMessage());
+        }
     }
 
     public function show($id)
@@ -54,13 +71,27 @@ class ChamadoController extends Controller
 
     public function update(Request $request, $id)
     {
-        $chamado = Chamado::findOrFail($id);
-        $chamado->title = $request->input('title');
-        $chamado->description = $request->input('description');
-        $chamado->status = Status::aberto;
-        $chamado->priority = Priority::fromString($request->input('priority'));
-        $chamado->save();
-        return redirect()->route('chamados.index')->with('success', 'Chamado atualizado com sucesso!');
+        try {
+            $request->validate([
+                'title' => 'required|string|max:50',
+                'description' => 'required|string',
+                'priority' => 'required',
+            ], [
+                'title.required' => 'O campo Título é obrigatório.',
+                'title.max' => 'O campo Título deve ter no máximo 50 caracteres.',
+                'description.required' => 'O campo Descrição é obrigatório.',
+                'priority.required' => 'O campo Prioridade é obrigatório.',
+            ]);
+            $chamado = Chamado::findOrFail($id);
+            $chamado->title = $request->input('title');
+            $chamado->description = $request->input('description');
+            $chamado->status = Status::aberto;
+            $chamado->priority = Priority::fromString($request->input('priority'));
+            $chamado->save();
+            return redirect()->route('chamados.index')->with('success', 'Chamado atualizado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Ocorreu um erro ao atualizar o chamado: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
@@ -82,7 +113,6 @@ class ChamadoController extends Controller
             $chamado->status = Status::fechado;
             $chamado->closing = Carbon::now();
             $chamado->save();
-
         } catch (\Exception $e) {
             return redirect()->route('chamados.index')
                 ->with('error', 'Ocorreu um erro ao tentar fechar o chamado.');
