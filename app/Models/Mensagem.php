@@ -11,4 +11,12 @@ class Mensagem extends Model
         'chamado_id',
         'user_id',
     ];
+    public function chamado()
+    {
+        return $this->belongsTo(Chamado::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

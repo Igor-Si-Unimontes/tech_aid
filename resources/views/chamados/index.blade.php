@@ -47,7 +47,6 @@
                     Nenhum chamado encontrado.
                 </div>
             @endif
-            @foreach ($chamados as $chamado)
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -56,12 +55,11 @@
                             <th>Status</th>
                             <th>Prioridade</th>
                             <th>Abertura</th>
-                            @if($chamado->in_progress)
                             <th>Iniciado o atendimento</th>
-                            @endif
                             <th>Ações</th>
                         </tr>
                     </thead>
+                    @foreach ($chamados as $chamado)
                     <tbody>
                         <tr>
                             <td>{{ $chamado->id }}</td>
@@ -71,6 +69,8 @@
                             <td> {{ \Carbon\Carbon::parse($chamado->opening)->format('d/m/Y H:i') }}</td>
                             @if($chamado->in_progress)
                             <td> Iniciado em : {{ \Carbon\Carbon::parse($chamado->in_progress)->format('d/m/Y H:i') }} por {{ $chamado->responsavel->name }}</td>
+                            @else
+                            <td> - </td>
                             @endif
                             <td>
                                 <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#viewModal{{ $chamado->id }}" title="Visualizar chamado">
@@ -89,7 +89,7 @@
                                 <a href="{{ route('chamados.open', $chamado->id) }}" class="btn btn-sm btn-success" title="Iniciar chamado"><i class="fa fa-play"></i></a>
                                 @endif
                                 @endcan
-                                <a href="#" class="btn btn-sm btn-info" title="Mensagem"><i class="fa fa-message"></i></a>
+                                <a href="{{ route('chamados.mensagens', $chamado->id) }}" class="btn btn-sm btn-info" title="Mensagem"><i class="fa fa-message"></i></a>
                                 @elseif(Route::currentRouteName() === 'chamados.closed')
                                 @endif
                                 <!-- Modal de exclusao -->
@@ -163,8 +163,8 @@
                             </td>
                         </tr>
                     </tbody>
+                    @endforeach
                 </table>
-            @endforeach
         </div>
     </div>
 @endsection

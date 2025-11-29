@@ -35,4 +35,9 @@ class Chamado extends Model
     {
         return $this->belongsTo(User::class, 'responsavel_id');
     }
+
+    public function mensagens()
+    {
+        return $this->hasMany(Mensagem::class);
+    }
 }

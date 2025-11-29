@@ -33,7 +33,7 @@ class ChamadoController extends Controller
 
             $request->validate(
                 [
-                    'title' => 'required|string|max:5',
+                    'title' => 'required|string|max:50',
                     'description' => 'required|string',
                     'priority' => 'required',
                 ],
@@ -137,5 +137,21 @@ class ChamadoController extends Controller
 
         return redirect()->route('chamados.index')
             ->with('success', 'Chamado aberto com sucesso!');
+    }
+
+    public function mensagens($id)
+    {
+        $chamado = Chamado::findOrFail($id);    
+        $mensagens = $chamado->mensagens; 
+        try{
+            if($chamado->user_id !== auth()->id() && $chamado->responsavel_id !== auth()->id()){
+                return redirect()->route('chamados.index')
+                ->with('error', 'Você só pode acessar as mensagens de chamados que você abriu ou está responsável.');
+            }
+            return view('chamados.mensagens', compact('chamado', 'mensagens'));
+        }catch(\Exception $e){
+            return redirect()->route('chamados.index')
+            ->with('error', 'Ocorreu um erro ao tentar acessar as mensagens do chamado.');
+        }
     }
 }

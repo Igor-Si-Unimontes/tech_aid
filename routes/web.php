@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::get('chamados/close/{id}', [ChamadoController::class, 'close'])->name('chamados.close');
     Route::get('chamados-closed', [ChamadoController::class, 'showAllClosed'])->name('chamados.closed');
     Route::get('chamados/open/{id}', [ChamadoController::class, 'open'])->name('chamados.open');
+    Route::get('chamados/mensagens/{id}', [ChamadoController::class, 'mensagens'])->name('chamados.mensagens');
+    Route::resource('mensagens', \App\Http\Controllers\MensagemController::class)->only(['create', 'store']);
 });
 
 require __DIR__.'/auth.php';
