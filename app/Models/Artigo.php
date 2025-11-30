@@ -13,4 +13,9 @@ class Artigo extends Model
         'tags',
         'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

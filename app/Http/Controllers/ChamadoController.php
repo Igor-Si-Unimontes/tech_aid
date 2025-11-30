@@ -105,9 +105,9 @@ class ChamadoController extends Controller
         try {
             $chamado = Chamado::findOrFail($id);
 
-            if ($chamado->user_id !== auth()->id()) {
+            if ($chamado->user_id !== auth()->id() && $chamado->responsavel_id !== auth()->id()) {
                 return redirect()->route('chamados.index')
-                    ->with('error', 'Você só pode fechar um chamado que você abriu.');
+                    ->with('error', 'Você só pode fechar um chamado que você abriu ou está responsável.');
             }
 
             $chamado->status = Status::fechado;

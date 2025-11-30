@@ -56,4 +56,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Chamado::class);
     }
+    public function artigos()
+    {
+        return $this->hasMany(Artigo::class);
+    }
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedbacks::class);
+    }
 }
