@@ -66,6 +66,16 @@ class ChamadoController extends Controller
     public function edit($id)
     {
         $chamado = Chamado::findOrFail($id);
+        $podeEditar = $chamado->user;
+        try{
+            if($chamado->user_id !== auth()->id()){
+                return redirect()->route('chamados.index')
+                ->with('error', 'Você só pode editar chamados que você abriu.');
+            }
+        }catch(\Exception $e){
+            return redirect()->route('chamados.index')
+            ->with('error', 'Ocorreu um erro ao tentar editar o chamado.');
+        }
         return view('chamados.edit', compact('chamado'));
     }
 

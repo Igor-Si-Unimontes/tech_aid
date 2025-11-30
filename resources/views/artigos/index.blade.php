@@ -20,9 +20,11 @@
         </div>
 
         <div class="col-6 text-end d-flex justify-content-end align-items-start">
+            @can('create artigo')
             <a href="{{ route('artigos.create') }}" class="btn btn-primary me-2">
                 Novo Artigo <i class="fa fa-plus"></i>
             </a>
+            @endcan
         </div>
 
     </div>
@@ -57,15 +59,18 @@
                                     </button>
 
                                     <div class="ms-3 me-3 d-flex align-items-center">
-
+                                        @can('edit artigo')
                                         <a href="{{ route('artigos.edit', $artigo->id) }}"
                                             class="btn btn-outline-secondary btn-sm me-1" title="Editar">
                                             <i class="fa fa-edit"></i>
                                         </a>
+                                        @endcan
+                                        @can('delete artigo')
                                         <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#modalDelete-{{ $artigo->id }}" title="Excluir">
                                             <i class="fa fa-trash"></i>
                                         </button>
+                                        @endcan
                                         <div class="modal fade" id="modalDelete-{{ $artigo->id }}" tabindex="-1"
                                             aria-labelledby="modalLabel-{{ $artigo->id }}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">

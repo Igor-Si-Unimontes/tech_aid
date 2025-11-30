@@ -77,14 +77,19 @@
                                 <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#viewModal{{ $chamado->id }}" title="Visualizar chamado">
                                     <i class="fa fa-eye"></i>
                                 </button>
+                                @can('edit chamado')
                                 <a href="{{ route('chamados.edit', $chamado->id) }}" class="btn btn-sm btn-warning" title="Editar chamado"><i class="fa fa-edit"></i></a>
-                                
+                                @endcan
                                 @if(Route::currentRouteName() === 'chamados.index')
                                 @can('close chamado')
                                 @if($chamado->status === \App\Enum\Status::andamento)
+                                @can('close chamado')
                                 <a href="{{ route('chamados.close', $chamado->id) }}" class="btn btn-sm btn-success" title="Fechar chamado"><i class="fa fa-close"></i></a>
+                                @endcan
                                 @elseif($chamado->status === \App\Enum\Status::aberto)
+                                @can('open chamado')
                                 <a href="{{ route('chamados.open', $chamado->id) }}" class="btn btn-sm btn-success" title="Iniciar chamado"><i class="fa fa-play"></i></a>
+                                @endcan
                                 @endif
                                 @endcan
                                 <a href="{{ route('chamados.mensagens', $chamado->id) }}" class="btn btn-sm btn-info" title="Mensagem"><i class="fa fa-message"></i></a>
@@ -94,9 +99,10 @@
     $feedbackJaEnviado = \App\Models\Feedbacks::where('chamado_id', $chamado->id)
         ->where('user_id', auth()->id())
         ->exists();
+        $usuario = auth()->user() === $chamado->user;
 @endphp
 
-@if($chamado->status === \App\Enum\Status::fechado && !$feedbackJaEnviado)
+@if($chamado->status === \App\Enum\Status::fechado && !$feedbackJaEnviado && $usuario)
     <button type="button"
             class="btn btn-sm btn-success"
             data-bs-toggle="modal"
@@ -162,8 +168,6 @@
                                         <dt class="col-sm-3">Fechado em:</dt>
                                         <dd class="col-sm-9">{{ $chamado->closing ? $chamado->closing->format('d/m/Y H:i') : '-' }}</dd>
 
-                                        <dt class="col-sm-3">Responsável:</dt>
-                                        <dd class="col-sm-9">{{ $chamado->user->name }}</dd>
                                         </dl>
                                     </div>
                                     <div class="modal-footer">

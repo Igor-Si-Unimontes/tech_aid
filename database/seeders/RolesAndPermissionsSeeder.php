@@ -19,7 +19,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'create chamado',
             'edit chamado',
             'close chamado',
-            'view closed chamados'
+            'view closed chamados',
+            'open chamado',
+            'create artigo',
+            'edit artigo',
+            'delete artigo',
         ];
 
         foreach ($permissions as $perm) {
@@ -28,9 +32,9 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Criar roles
         $roles = [
-            'admin' => ['create chamado', 'edit chamado', 'close chamado', 'view closed chamados'],
-            'tech' => ['edit chamado', 'close chamado', 'view closed chamados'],
-            'user' => ['create chamado', 'view closed chamados'],
+            'admin' => ['create chamado', 'edit chamado', 'close chamado', 'view closed chamados', 'create artigo', 'edit artigo', 'delete artigo'],
+            'tech' => ['close chamado', 'view closed chamados', 'open chamado'],
+            'user' => ['edit chamado', 'create chamado', 'view closed chamados', 'close chamado'],
         ];
 
         foreach ($roles as $roleName => $perms) {
